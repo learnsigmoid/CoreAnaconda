@@ -11,3 +11,6 @@ class Mother:
 
 class Child(Father, Mother):
     pass
+
+child = Child()
+print(child.skills())
