@@ -1,0 +1,12 @@
+#example for encapsulation in python
+
+class PaymentGateway:
+    def __init__(self):
+        self.__api_key = "SECRET_KEY"
+
+    def __authenticate(self):
+        return True
+
+    def process_payment(self, amount):
+        if self.__authenticate():
+            print(f"Payment of ₹{amount} processed successfully")
