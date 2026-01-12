@@ -1,0 +1,25 @@
+#Python Multiple Inheritance Simpler Real World Use Case
+class EnterpriseCRMUser(
+    CRMUser,
+    AuthMixin,
+    AuthorizationMixin,
+    AuditMixin,
+    AIAssistantMixin
+):
+    def __init__(self, username, permissions):
+        CRMUser.__init__(self, username)
+        self.permissions = permissions
+
+    def perform_action(self, action):
+        if not self.has_permission(action):
+            return f"Access denied for action: {action}"
+
+        audit_log = self.log_action(action)
+        ai_tip = self.recommend_next_action()
+
+        return (
+            f"{self.authenticate()}\n"
+            f"Action '{action}' performed\n"
+            f"{audit_log}\n"
+            f"{ai_tip}"
+        )
