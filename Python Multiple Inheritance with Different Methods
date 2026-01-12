@@ -11,3 +11,7 @@ class GPS:
 
 class Smartphone(Camera, GPS):
     pass
+
+phone = Smartphone()
+print(phone.take_photo())
+print(phone.navigate())
