@@ -1,0 +1,27 @@
+#MRO stands for Method Resolution Order.
+#In cooperative (multiple) inheritance, MRO defines the exact order in which Python looks for a method or attribute when you call it on an object.
+#MRO decides “who gets called next” when multiple parent classes are involved.
+
+#Simple multiple inheritance example with MRO
+
+class A:
+    def process(self):
+        print("A")
+        super().process()
+
+class B:
+    def process(self):
+        print("B")
+        super().process()
+
+class C:
+    def process(self):
+        print("C")
+
+class D(A, B, C):
+    def process(self):
+        print("D")
+        super().process()
+
+d = D()
+d.process()
