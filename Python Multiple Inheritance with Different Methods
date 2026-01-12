@@ -1,0 +1,13 @@
+#Multpile Inheritance with Different Methods
+class Camera:
+    def take_photo(self):
+        return "Photo taken"
+
+
+class GPS:
+    def navigate(self):
+        return "Navigating to destination"
+
+
+class Smartphone(Camera, GPS):
+    pass
