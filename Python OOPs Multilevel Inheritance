@@ -1,0 +1,139 @@
+#Python Multi-level Inheritance OOPS example 3
+from abc import ABC, abstractmethod
+from datetime import datetime
+
+
+# Level 1: Base Entity (Abstract)
+class Entity(ABC):
+    def __init__(self, entity_id):
+        self.entity_id = entity_id
+        self.created_at = datetime.now()
+
+    def audit(self):
+        print(f"[AUDIT] Entity ID: {self.entity_id}, Created At: {self.created_at}")
+
+    @abstractmethod
+    def get_entity_type(self):
+        pass
+
+
+# Level 2: Account
+class Account(Entity):
+    def __init__(self, entity_id, holder_name):
+        super().__init__(entity_id)
+        self.holder_name = holder_name
+
+    def get_entity_type(self):
+        return "Generic Account"
+
+    def show_holder(self):
+        print(f"Account Holder: {self.holder_name}")
+
+
+# Level 3: BankAccount
+class BankAccount(Account):
+    def __init__(self, entity_id, holder_name, account_number, balance=0.0):
+        super().__init__(entity_id, holder_name)
+        self.account_number = account_number
+        self.balance = balance
+
+    def deposit(self, amount):
+        if amount <= 0:
+            raise ValueError("Deposit amount must be positive")
+        self.balance += amount
+        print(f"Deposited ₹{amount}. New Balance: ₹{self.balance}")
+
+    def withdraw(self, amount):
+        if amount > self.balance:
+            raise ValueError("Insufficient balance")
+        self.balance -= amount
+        print(f"Withdrawn ₹{amount}. Remaining Balance: ₹{self.balance}")
+
+    def get_entity_type(self):
+        return "Bank Account"
+
+
+# Level 4: SavingsAccount
+class SavingsAccount(BankAccount):
+    def __init__(self, entity_id, holder_name, account_number, interest_rate, balance=0.0):
+        super().__init__(entity_id, holder_name, account_number, balance)
+        self.interest_rate = interest_rate
+
+    def calculate_interest(self):
+        interest = self.balance * self.interest_rate
+        print(f"Interest Earned: ₹{interest}")
+        return interest
+
+    def get_entity_type(self):
+        return "Savings Account"
+
+
+# Level 5: PremiumSavingsAccount (Most Specialized)
+class PremiumSavingsAccount(SavingsAccount):
+    def __init__(
+        self,
+        entity_id,
+        holder_name,
+        account_number,
+        interest_rate,
+        minimum_balance,
+        concierge_service,
+        balance=0.0
+    ):
+        super().__init__(
+            entity_id,
+            holder_name,
+            account_number,
+            interest_rate,
+            balance
+        )
+        self.minimum_balance = minimum_balance
+        self.concierge_service = concierge_service
+
+    # Method Overriding (Enterprise Rule)
+    def withdraw(self, amount):
+        if self.balance - amount < self.minimum_balance:
+            raise ValueError("Withdrawal denied: Minimum balance rule violated")
+        super().withdraw(amount)
+
+    def premium_benefits(self):
+        print("Premium Benefits:")
+        print("- Higher interest rate")
+        print("- Dedicated relationship manager")
+        print(f"- Concierge Service: {self.concierge_service}")
+
+    def get_entity_type(self):
+        return "Premium Savings Account"
+
+
+# ----------------- MAIN EXECUTION -----------------
+if __name__ == "__main__":
+    premium_account = PremiumSavingsAccount(
+        entity_id="ENT-9001",
+        holder_name="Rahul Mehta",
+        account_number="SBIN0004567",
+        interest_rate=0.06,
+        minimum_balance=50000,
+        concierge_service="24x7 Wealth Advisory",
+        balance=150000
+    )
+
+    print("\n--- ACCOUNT DETAILS ---")
+    premium_account.audit()
+    premium_account.show_holder()
+    print("Entity Type:", premium_account.get_entity_type())
+
+    print("\n--- TRANSACTIONS ---")
+    premium_account.deposit(25000)
+    premium_account.calculate_interest()
+    premium_account.withdraw(30000)
+
+    print("\n--- PREMIUM FEATURES ---")
+    premium_account.premium_benefits()
+
+
+
+
+
+
+
