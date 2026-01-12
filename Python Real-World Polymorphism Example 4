@@ -1,0 +1,102 @@
+#A company accepts payments via: Credit Card, UPI, Net Banking, Wallet Each payment method processes payment differently, but the system should: Call the same method Not care which payment type it is 
+#That is polymorphism.
+
+#Real-World Polymorphism Example
+#Payment Processing System (FinTech / E-Commerce)
+
+from abc import ABC, abstractmethod
+from datetime import datetime
+import uuid
+
+class PaymentMethod(ABC):
+    """
+    Abstract base class for all payment methods
+    """
+
+    def __init__(self, user_id):
+        self.user_id = user_id
+        self.transaction_id = str(uuid.uuid4())
+        self.timestamp = datetime.now()
+
+    @abstractmethod
+    def pay(self, amount):
+        pass
+
+class CreditCardPayment(PaymentMethod):
+
+    def pay(self, amount):
+        return {
+            "transaction_id": self.transaction_id,
+            "method": "Credit Card",
+            "amount": amount,
+            "status": "SUCCESS",
+            "message": f"₹{amount} charged to credit card"
+        }
+
+class UPIPayment(PaymentMethod):
+
+    def pay(self, amount):
+        return {
+            "transaction_id": self.transaction_id,
+            "method": "UPI",
+            "amount": amount,
+            "status": "SUCCESS",
+            "message": f"₹{amount} paid using UPI"
+        }
+
+class NetBankingPayment(PaymentMethod):
+
+    def pay(self, amount):
+        return {
+            "transaction_id": self.transaction_id,
+            "method": "Net Banking",
+            "amount": amount,
+            "status": "SUCCESS",
+            "message": f"₹{amount} transferred via Net Banking"
+        }
+
+class WalletPayment(PaymentMethod):
+
+    def pay(self, amount):
+        return {
+            "transaction_id": self.transaction_id,
+            "method": "Wallet",
+            "amount": amount,
+            "status": "SUCCESS",
+            "message": f"₹{amount} deducted from wallet"
+        }
+
+class PaymentProcessor:
+
+    def process_payment(self, payment_method: PaymentMethod, amount):
+        """
+        Polymorphic behavior:
+        Calls pay() without knowing the actual payment type
+        """
+        receipt = payment_method.pay(amount)
+        self.print_receipt(receipt)
+
+    def print_receipt(self, receipt):
+        print("\n--- Payment Receipt ---")
+        for key, value in receipt.items():
+            print(f"{key}: {value}")
+
+if __name__ == "__main__":
+
+    processor = PaymentProcessor()
+
+    payments = [
+        CreditCardPayment(user_id=101),
+        UPIPayment(user_id=102),
+        NetBankingPayment(user_id=103),
+        WalletPayment(user_id=104)
+    ]
+
+    for payment in payments:
+        processor.process_payment(payment, 2500)
+
+
+
+
+
+
