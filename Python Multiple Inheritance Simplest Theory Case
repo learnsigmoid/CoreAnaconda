@@ -1,0 +1,13 @@
+#Python Multiple Inheritance Simplest Theory Case
+class Father:
+    def skills(self):
+        return "Driving, Financial planning"
+
+
+class Mother:
+    def skills(self):
+        return "Cooking, Time management"
+
+
+class Child(Father, Mother):
+    pass
