@@ -1,0 +1,93 @@
+#Multiple Inheritance in Python
+# =========================
+# MIXINS (Reusable Behaviors)
+# =========================
+
+class AuthMixin:
+    def authenticate(self):
+        return f"[AUTH] User '{self.username}' authenticated successfully"
+
+
+class AuthorizationMixin:
+    def has_permission(self, action):
+        return action in self.permissions
+
+
+class AuditMixin:
+    def log_action(self, action):
+        return f"[AUDIT] User={self.username}, Action={action}"
+
+
+class AIAssistantMixin:
+    def recommend_next_action(self):
+        return "[AI] Suggestion: Follow up with customer in 24 hours"
+
+
+# =========================
+# CORE BUSINESS ENTITY
+# =========================
+
+class CRMUser:
+    def __init__(self, username):
+        self.username = username
+
+
+# =========================
+# MULTIPLE INHERITANCE CLASS
+# =========================
+
+class EnterpriseCRMUser(
+    CRMUser,
+    AuthMixin,
+    AuthorizationMixin,
+    AuditMixin,
+    AIAssistantMixin
+):
+    def __init__(self, username, permissions):
+        CRMUser.__init__(self, username)
+        self.permissions = permissions
+
+    def perform_action(self, action):
+        output = []
+
+        # Authenticate
+        output.append(self.authenticate())
+
+        # Authorization check
+        if not self.has_permission(action):
+            output.append(f"[ACCESS DENIED] No permission for action: {action}")
+            return "\n".join(output)
+
+        # Perform action
+        output.append(f"[ACTION] '{action}' executed successfully")
+
+        # Audit logging
+        output.append(self.log_action(action))
+
+        # AI Recommendation
+        output.append(self.recommend_next_action())
+
+        return "\n".join(output)
+
+
+# =========================
+# EXECUTION / TESTING
+# =========================
+
+if __name__ == "__main__":
+
+    # Create enterprise CRM user
+    user = EnterpriseCRMUser(
+        username="sales_manager_01",
+        permissions=["create_lead", "update_lead", "close_deal"]
+    )
+
+    print("=== PERFORMING VALID ACTION ===")
+    print(user.perform_action("close_deal"))
+
+    print("\n=== PERFORMING INVALID ACTION ===")
+    print(user.perform_action("delete_customer"))
+
+    print("\n=== METHOD RESOLUTION ORDER (MRO) ===")
+    for cls in EnterpriseCRMUser.mro():
+        print(cls)
