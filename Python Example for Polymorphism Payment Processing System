@@ -24,6 +24,11 @@ class NetBanking(PaymentMethod):
     def pay(self, amount):
         return f"Paid ₹{amount} using Net Banking"
 
+class Wallet(PaymentMethod):
+
+    def pay(self, amount):
+        return f"Paid ₹{amount} using Wallet"
+
 class PaymentProcessor:
 
     def process_payment(self, payment_method: PaymentMethod, amount):
@@ -33,6 +38,7 @@ payments = [
     CreditCard(),
     UPI(),
     NetBanking()
+    Wallet()
 ]
 
 processor = PaymentProcessor()
