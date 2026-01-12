@@ -1,0 +1,44 @@
+#Real-World Scenario: Payment Processing System 
+#Base Class (Common Interface)
+
+from abc import ABC, abstractmethod
+
+class PaymentMethod(ABC):
+
+    @abstractmethod
+    def pay(self, amount):
+        pass
+
+class CreditCard(PaymentMethod):
+
+    def pay(self, amount):
+        return f"Paid ₹{amount} using Credit Card"
+
+class UPI(PaymentMethod):
+
+    def pay(self, amount):
+        return f"Paid ₹{amount} using UPI"
+
+class NetBanking(PaymentMethod):
+
+    def pay(self, amount):
+        return f"Paid ₹{amount} using Net Banking"
+
+class PaymentProcessor:
+
+    def process_payment(self, payment_method: PaymentMethod, amount):
+        print(payment_method.pay(amount))
+
+payments = [
+    CreditCard(),
+    UPI(),
+    NetBanking()
+]
+
+processor = PaymentProcessor()
+
+for payment in payments:
+    processor.process_payment(payment, 1500)
+
+
+
