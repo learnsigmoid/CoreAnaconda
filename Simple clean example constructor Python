@@ -1,0 +1,44 @@
+#a simple, clean example of a constructor in Python
+
+class Person:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+    def greet(self):
+        print(f"Hi, my name is {self.name} and I am {self.age} years old.")
+
+    # Creating objects (instances)
+    p1 = Person("Alice", 30)
+    p2 = Person("Bob", 25)
+    
+    p1.greet()
+    p2.greet()
+
+
+#Constructor with default values 
+
+class Car:
+    def __init__(self, brand, year=2024):
+        self.brand = brand
+        self.year = year
+
+car1 = Car("Toyota")
+car2 = Car("BMW", 2022)
+
+print(car1.brand, car1.year)
+print(car2.brand, car2.year)
+
+#Constructor doing validation (real-world style)
+
+class BankAccount:
+    def __init__(self, balance):
+        if balance < 0:
+            raise ValueError("Balance cannot be negative")
+        self.balance = balance
+
+account = BankAccount(5000)
+
+
+
+
