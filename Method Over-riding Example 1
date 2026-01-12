@@ -1,0 +1,10 @@
+#Python Polymorphism Method Over-riding Example
+
+class Animal:
+    def sound(self):
+        print("Animal makes a sound")
+
+
+class Dog(Animal):
+    def sound(self):   # overridden method
+        print("Dog barks")
